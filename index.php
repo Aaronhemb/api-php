@@ -13,6 +13,13 @@ header("content-type: application/json");
 
 $metodo = $_SERVER['REQUEST_METHOD'];
 
+//consegimos el $id
+$path= isset($_SERVER['PATH_INFO'])?$_SERVER['PATH_INFO']:'/';
+
+$buscarId = explode('/',$path);
+
+$id = ($path!=='/') ? end($buscarId):null;
+
 switch ($metodo) {
     // Select mensajes
     case 'GET':
@@ -20,16 +27,15 @@ switch ($metodo) {
         break;
     // insertar mensajes
     case 'POST':
-        echo "Consultar registros - POST";
         insertar($conexion);
         break;
     // update mensajes
     case 'PUT':
-        echo "Consultar registros - PUT";
+        
         break;
     // delate mensajes
     case 'DELETE':
-        echo "Consultar registros - DELETE";
+        delate($conexion, $id);
         break;
     default:
         echo "Metodo no permitido";
@@ -71,5 +77,21 @@ function insertar($conexion){
         echo json_encode(array('error'=>'error al crear usuario'));
     }
 }
+
+//funcion de delate
+function delate($conexion, $id){
+    echo "El id a borrar es:". $id;
+
+    $sql=" DELETE FROM datos_chat WHERE id = $id";
+    $resultado= $conexion->query($sql);
+    
+    if($resultado){
+        echo json_encode(array('mensaje'=>'Mensaje Eliminado'));
+    }else{
+        echo json_encode(array('error'=>'error al Eliminar mensaje'));
+    }
+
+}
+
 
 ?>
