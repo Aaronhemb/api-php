@@ -21,6 +21,7 @@ switch ($metodo) {
     // insertar mensajes
     case 'POST':
         echo "Consultar registros - POST";
+        insertar($conexion);
         break;
     // update mensajes
     case 'PUT':
@@ -44,6 +45,30 @@ $resultado= $conexion->query($sql);
             $datos[]=$fila;
         }
         echo json_encode($datos);
+    }
+}
+
+//funcion de insertar informacion
+function insertar($conexion){
+    $dato=json_decode(file_get_contents('php://input'),true);
+    $preguntas=$dato['preguntas'];
+    date_default_timezone_set('America/Mexico_City');
+    $fecha=date('Y-m-d H:i:s');
+    $nombre=$dato['nombre'];
+    $correo=$dato['correo'];
+    $telefono=$dato['telefono'];
+    $id_unico=$dato['id_unico'];
+    
+    $sql="INSERT INTO datos_chat(preguntas, fecha, nombre, correo, telefono, id_unico) 
+    VALUES ('$preguntas', '$fecha', '$nombre', '$correo', '$telefono', '$id_unico')";
+    
+    $resultado= $conexion->query($sql);
+    
+    if($resultado){
+        $dato['id']=$conexion->insert_id;
+        echo json_encode($dato);
+    }else{
+        echo json_encode(array('error'=>'error al crear usuario'));
     }
 }
 
