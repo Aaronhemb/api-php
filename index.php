@@ -13,13 +13,10 @@ header("content-type: application/json");
 
 $metodo = $_SERVER['REQUEST_METHOD'];
 
-print_r($metodo);
-
-
 switch ($metodo) {
     // Select mensajes
     case 'GET':
-        echo "Consultar registros - GET";
+        consultaSelect($conexion);
         break;
     // insertar mensajes
     case 'POST':
@@ -37,4 +34,17 @@ switch ($metodo) {
         echo "Metodo no permitido";
         break;
 }
+//funcion para consultar la informacion de la base de datos 
+Function consultaSelect($conexion){
+$sql="SELECT * FROM datos_chat ORDER BY fecha ASC";
+$resultado= $conexion->query($sql);
+    if($resultado){
+        $datos=array();
+        while($fila=$resultado->fetch_assoc()){
+            $datos[]=$fila;
+        }
+        echo json_encode($datos);
+    }
+}
+
 ?>
