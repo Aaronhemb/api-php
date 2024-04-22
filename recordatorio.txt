@@ -1,0 +1,5 @@
+Debo de Colocar el id_unico 
+como en el sig ejemplo 
+http://localhost:81/api-php/index.php?id_unico=963971
+
+para que me muestre informacion
